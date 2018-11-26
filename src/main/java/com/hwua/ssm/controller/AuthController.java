@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hwua.ssm.entity.Auth;
 import com.hwua.ssm.service.AuthService;
 import com.hwua.ssm.util.UpdateResult;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,10 +21,12 @@ public class AuthController {
     private AuthService authService;
 
     @RequestMapping("/index")
+    @RequiresPermissions(value = "auth")
     public String index(){
         return "auth/auth";
     }
 
+    @RequiresPermissions(value = "auth_query")
     @RequestMapping(value = "/queryAllAuth",produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String queryAllAuth(){
@@ -35,6 +38,7 @@ public class AuthController {
         return result.toJSONString();
     }
 
+    @RequiresPermissions(value = "auth_edit")
     @RequestMapping(value = "/saveOrUpdateAuth",produces = "text/html;charset=UTF-8")
     @ResponseBody
     public String saveOrUpdateAuth(Auth auth){
